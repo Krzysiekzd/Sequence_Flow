@@ -1,0 +1,35 @@
+{
+  "name": "frontend-sequenceflow",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+    "lint": "eslint ./src --ext .js --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.19.3",
+    "@webpack-cli/generators": "^3.0.1",
+    "babel-loader": "^8.2.5",
+    "css-loader": "^6.7.1",
+    "eslint": "^8.33.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "nouislider": "^15.7.0",
+    "phylotree": "^1.2.3",
+    "sortablejs": "^1.15.0",
+    "svg-crowbar": "^0.7.0"
+  }
+}

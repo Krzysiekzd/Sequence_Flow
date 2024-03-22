@@ -1,0 +1,86 @@
+#for_draggable{
+  display:flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1rem;
+  padding: 1rem 0 1rem 0;
+  width: 100%;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+
+.acids_group_wrapper{
+  height: 8rem;
+  width: 12rem;
+  max-width: 15rem;
+  min-width: 10rem;
+  padding: 0.5em 1em 0.5em 1em;
+  column-count: 2;
+  column-gap: 0;
+  background-color: white;
+  border: solid 1px black;
+  border-radius: 5px;
+}
+
+.acids_inputs_wrapper{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: center;
+  outline: solid 1px black;
+  color: black;
+  line-height: initial;
+}
+
+.amino_acids_group{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: white;
+  overflow-y: auto;
+  row-gap: 5px;
+}
+
+.draggable_amino_acid{
+  width: 80%;
+  height: 1.2rem;
+  text-align: center;
+  line-height: 1.2rem;
+  padding: 0.2rem 0;
+  margin: auto;
+  margin: 0 10% 0 10%;
+  border: solid 1px black;
+  border-radius: 5px;
+  background-color: grey;
+  color: white;
+  /* No select*/
+  cursor: pointer;
+  -webkit-touch-callout: none; 
+  -webkit-user-select: none; 
+  -khtml-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none; 
+  -webkit-box-shadow: 0px 7px 4px -3px rgba(133, 134, 140, 1);
+  -moz-box-shadow: 0px 7px 4px -3px rgba(133, 134, 140, 1);
+  box-shadow: 0px 7px 4px -3px rgba(133, 134, 140, 1);
+
+}
+
+.acids_group_name_input{
+  width: 80%;
+  height: 1.5rem;
+  border: solid 1px black;
+  border-radius: 3px;
+}
+.acids_color_input{
+  height: 1.5rem;
+  width: 80%;
+  border-radius: 3px;
+}

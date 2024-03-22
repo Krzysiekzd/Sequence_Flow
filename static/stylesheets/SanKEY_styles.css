@@ -1,0 +1,56 @@
+rect[identifier=SankeyNode]:hover {
+    filter: contrast(1.1) brightness(1.05) drop-shadow(0px 0px 1.7px #000000);
+}
+.focused_SankeyNode{
+    filter: contrast(1.1) brightness(1.05) drop-shadow(0px 0px 1.7px #000000);
+}
+.hovered_SankeyLink
+{
+    stroke: var(--second-color);
+    stroke-width: 2px;
+}
+
+@keyframes fadingAnimationNodeInfo {
+    0%{opacity: 0}
+    100%{opacity: 0.95}
+}
+@keyframes fadingAnimationLinkInfo {
+    0%{opacity: 0;}
+    100%{opacity: 0.95}
+}
+.node_info_div {
+    position: fixed;
+    background-color: var(--second-color);
+    color: var(--basic-color);
+    border: solid 2px lightgrey;
+    font-size: 18px;
+    min-width: 50px;
+    padding: 0 5px 0 5px;
+    text-align: center;
+    animation: fadingAnimationNodeInfo 0.3s;
+    opacity: 0.95;
+
+}
+.link_info_div
+{
+    position: fixed;
+    background-color: var(--second-color);
+    color: var(--basic-color);
+    border: solid 2px lightgrey;
+    font-size: 18px;
+    padding: 0 5px 0 5px;
+    text-align: center;
+    animation: fadingAnimationLinkInfo 0.3s;
+    opacity: 0.95;
+    overflow-wrap: break-word;
+}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+    touch-action: pinch-zoom;
+}

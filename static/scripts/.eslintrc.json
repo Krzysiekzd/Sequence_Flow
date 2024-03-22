@@ -1,0 +1,56 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": "eslint:recommended",
+    "overrides": [
+      {
+        "files": ["*.js"],
+        "rules": {
+          "no-prototype-builtins": "off"
+        }
+      }
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": [
+            "error",
+            "tab"
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-unused-vars": [
+          "warn",
+          {
+            "varsIgnorePattern": "_", // ignore local variables with _ in the name
+            "argsIgnorePattern": "_", // ignore arguments with _ in the name
+            "ignoreRestSiblings": true, // allow destructuring to omit properties
+            "caughtErrors": "all" // require using error argument
+          }
+        ],
+        "prefer-const": [
+          "warn"
+        ],
+        "array-callback-return" : [
+          "error"
+        ],
+        "no-constructor-return": [
+          "error"
+        ]
+        
+    }
+}
