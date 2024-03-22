@@ -1,13 +1,13 @@
 # Sequence Flow
 Sequence Flow is a small web application that allows you to easily visualize Multiple Sequence Alignments with an innovative approach - using Sankey diagrams.  
-The production version is available under https://sequenceflow.mimuw.edu.pl/.  
+The production version is available at https://sequenceflow.mimuw.edu.pl/.  
 
 ## How to start locally
 __(Should be used with Python 3.11)__  
 In order to start the application:
 1. Download the repository
 2. It's recommended to create a virtual Python environment and activate it
-3. Install the packages from the `requirements.txt` file an run the application with the following commands:
+3. Install the packages from the `requirements.txt` file and run the application with the following commands:
 ```bash
 pip install -r requirements.txt
 python3 app.py
@@ -22,7 +22,7 @@ Any change made to the JavaScript files requires bundling. To do so, you need to
 ```
 npm i
 ```
-And uppon changes run:
+And upon changes run:
 
 ```bash
 npm run build
