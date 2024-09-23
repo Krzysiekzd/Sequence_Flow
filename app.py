@@ -24,6 +24,13 @@ ALLOWED_EXTENSIONS = {
     "faa": "fasta",
     "fas": "fasta",
     "clustal": "clustal",
+    "aln": "clustal",
+    "phy": "phylip",
+    "phylip": "phylip",
+    "stk": "stockholm",
+    "sth": "stockholm",
+    "sto": "stockholm",
+    "stockholm": "stockholm",
 }
 
 
@@ -61,13 +68,15 @@ def return_parsed_sequences():
     file.close()
     valid = True
     sequences = None
+    error = ''
     try:
         sequences = read_sequences(filepath, file_extension[1])
-    except:
+    except Exception as e:
         valid = False
+        error = str(e)
     os.remove(filepath)
 
-    return (jsonify(sequences), 200) if valid else ("Invalid file", 500)
+    return (jsonify(sequences), 200) if valid else (f"Invalid file: {error}", 500)
 
 
 @app.route("/get_example/<dataset_name>", methods=["GET"])

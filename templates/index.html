@@ -1,471 +1,451 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Sequence Flow</title>
-        <link rel="icon" type="image/x-icon"
-            href="{{ url_for('static', filename = 'images/favicon.ico')}}">
-        <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Heebo">
-        <style>
-            @font-face{
-                font-family: Acquire;
-                src: url("{{ url_for('static', filename = 'fonts/Acquire.otf')}}") format('opentype');
-            }
-            @font-face{
-                font-family: Acquire;
-                font-weight: bold;
-                src: url("{{ url_for('static', filename = 'fonts/Acquire_bold.otf')}}") format('opentype');            }
-        </style>
-        <script type="module"
-            src="{{url_for('static', filename = 'scripts/dist/index.js')}}"
-            defer></script>
-        <script type="module"
-            src="{{url_for('static', filename = 'scripts/dist/bar.js')}}" async></script>
 
-    </head>
-    <body onload="hideLoadingScreen()">
-        <div
-            style="position:fixed;top:0;bottom:0;width:100vw;height:100vh;z-index:9999;background-color:#3e204a;display:flex;justify-content:center;font:initial"
-            id="loading_screen">
+<head>
+  <title>Sequence Flow</title>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'images/favicon.ico')}}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Heebo">
+  <style>
+    @font-face {
+      font-family: Acquire;
+      src: url("{{ url_for('static', filename = 'fonts/Acquire.otf')}}") format('opentype');
+    }
+
+    @font-face {
+      font-family: Acquire;
+      font-weight: bold;
+      src: url("{{ url_for('static', filename = 'fonts/Acquire_bold.otf')}}") format('opentype');
+    }
+  </style>
+  <script type="module" src="{{url_for('static', filename = 'scripts/dist/index.js')}}" defer></script>
+  <script type="module" src="{{url_for('static', filename = 'scripts/dist/bar.js')}}" async></script>
+
+</head>
+
+<body onload="hideLoadingScreen()">
+  <div
+    style="position:fixed;top:0;bottom:0;width:100vw;height:100vh;z-index:9999;background-color:#3e204a;display:flex;justify-content:center;font:initial"
+    id="loading_screen">
+    <div style="color: white; font-size:50px;margin-top:calc(50vh - 50px)">Loading
+      Sequence Flow...</div>
+  </div>
+  <noscript style="width:100vw;height:100vh;z-index:10000;background-color:black;font-size:50px;color:red;">Enable
+    JavaScript in your browser.</noscript>
+  <header>
+    <div id="header_container">
+      <div id="logo" style="margin-right:20px">
+        <img src="{{ url_for('static', filename = 'images/SEQUENCE_FLOW_LOGO.svg')}}" alt="SEQUENCE FLOW"
+          style="height:100%;" />
+      </div>
+      <div id="header_button_wrapper">
+        <button type="button" id="main_page_button" class="header_button">MAIN PAGE</button>
+        <button type="button" id="visualization_page_button" class="header_button"
+          style="display:none;">VISUALIZATION</button>
+        <button type="button" id="manual_button" class="header_button">MANUAL</button>
+        <button type="button" id="about_us_button" class="header_button">ABOUT THE PROJECT</button>
+      </div>
+    </div>
+  </header>
+  <div id="main_container_for_main_page" style="display:none;align-items:center;" class="full_page">
+    <div id="starting_page">
+      <h1 style="font-family:Acquire;font-size:45px;margin:0;text-align:center;">Welcome
+        to Sequence Flow!</h1>
+      <h2>Upload your alignment file or explore the example.</h2>
+      <div id="file_upload_container">
+        <div>
+          <input type="file" id="alignment_file_input_" style='display:none;' autocomplete="off"
+            name="alignment_file_input_"
+            accept=".msf, .fasta, .fna, .ffn, .faa, .frn, .fa, .fas, .clustal, .aln, .phylip, .phy, .stk, .sth, .sto, .stockholm">
+          <label for="alignment_file_input_" id="alignment_file_input">Upload alignment file
+            <span id="check" style="color:#92fa5a"></span></label>
+          <div id="for_alignment_file_name" style="display:none"></div>
+        </div>
+        <div>
+          <label for="alignment_type_select" style="font-weight:bold;">Select alignment type:</label>
+          <select id="alignment_type_select" name="alignment_type_select" autocomplete="off"
+            style="font-size: 16px;font-weight:bold;padding:0.3rem 5px 0.3rem 5px;">
+            <option value="nucleic" selected="selected">Nucleic
+              acids (DNA/RNA)</option>
+            <option value="protein">Proteins</option>
+          </select>
+        </div>
+        <div>
+          <input type="checkbox" id="add_tree_checkbox" autocomplete="off">
+          <label for="add_tree_checkbox"><span
+              data-wenk="⚠️ Make sure that the names of the sequences in your alignment, match the sequences in your Newick file, and don't contain whitespaces."
+              data-wenk-pos="right" class="wenk-length--fit">Include
+              tree file</span></label><br>
+        </div>
+        <div id="tree_input_wrapper" style="display:none;">
+
+          <input type="file" id="tree_file_input" autocomplete="off" style='display:none;'
+            accept=".newick, .nwk, .tree, .ph">
+          <label for="tree_file_input" id="tree_file_input_label">Upload
+            Newick file <span id="check2" style="color:#92fa5a"></span></label>
+          <div id="for_tree_file_name" style="display:none"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:2em;gap:0.5rem;font-size:18px;">
+          <button class="normal_buttons" id="visualize_button" disabled>Visualize</button>
+          <span style="color:red;display:none;font-size:bold;margin:1rem;margin-bottom:0;text-align: center;"
+            id="file_error">Error. Invalid alignment file.
+            Verify it and try again.</span>
+        </div>
+      </div>
+      <br>
+      <h2>Examples</h2>
+      <div>
+        <label for="example_alignment_select" style="font-weight:bold;">Select the dataset:</label>
+        <select id="example_alignment_select" autocomplete="off" name="example_alignment_select"
+          style="font-size: 16px;font-weight:bold;padding:0.3rem 5px 0.3rem 5px;">
+          <option data-alignment-type="protein" value="msl_ref7" selected>msl_ref7 (protein)</option>
+          <option data-alignment-type="nucleic" value="mucin2">mucin2 (nucleic)</option>
+          <option data-alignment-type="nucleic" value="read_correction">Long reads + consensus (nucleic)</option>
+          <option data-alignment-type="protein" value="Example_protein">Simulated (protein, with tree)</option>
+          <option data-alignment-type="nucleic" value="Example_DNA">Simulated (nucleic, with tree)</option>
+        </select>
+      </div>
+      <br>
+      <button id="example_alignment_button" class="normal_buttons"
+        style="padding:0.5rem 10px 0.5rem 10px;font-size:18px;">Show
+        example alignment</button>
+    </div>
+  </div>
+  <div id="visualization_page_subpage" class="full_page">
+    <div id="visualization_page">
+      <div class="sidebar noselect" style="display: none" id="sidebar">
+        <div id="bar_items">
+          <div style="display: flex; width: 100%; height: 3rem;margin-bottom:1rem;">
+            <div style="text-align:center;width: 100%;line-height: 3rem;font-size:1.5rem;"><b>Additional
+                settings</b></div>
             <div
-                style="color: white; font-size:50px;margin-top:calc(50vh - 50px)">Loading
-                Sequence Flow...</div>
-        </div>
-        <noscript
-            style="width:100vw;height:100vh;z-index:10000;background-color:black;font-size:50px;color:red;">Enable
-            JavaScript in your browser.</noscript>
-        <header>
-            <div id="header_container">
-                <div id="logo" style="margin-right:20px">
-                    <img
-                        src="{{ url_for('static', filename = 'images/SEQUENCE_FLOW_LOGO.svg')}}"
-                        alt="SEQUENCE FLOW" style="height:100%;" />
-                </div>
-                <div id="header_button_wrapper">
-                    <button type="button" id="main_page_button"
-                        class="header_button">MAIN PAGE</button>
-                    <button type="button" id="visualization_page_button"
-                        class="header_button" style="display:none;">VISUALIZATION</button>
-                    <button type="button" id="manual_button"
-                        class="header_button">MANUAL</button>
-                    <button type="button" id="about_us_button"
-                        class="header_button">ABOUT THE PROJECT</button>
-                </div>
+              style="width: 3rem; height: 100%; display: flex; justify-content: center;align-items: center;text-align:center;padding-right:12px;">
+              <div id="close_settings">&times;</div>
             </div>
-        </header>
-        <div id="main_container_for_main_page"
-            style="display:none;align-items:center;" class="full_page">
-            <div id="starting_page">
-                <h1
-                    style="font-family:Acquire;font-size:45px;margin:0;text-align:center;">Welcome
-                    to Sequence Flow!</h1>
-                <h2>Upload your alignment file or explore the example.</h2>
-                <div id="file_upload_container">
-                    <div>
-                        <input type="file" id="alignment_file_input_"
-                            style='display:none;' autocomplete="off"
-                            name="alignment_file_input_"
-                            accept=".msf, .fasta, .fna, .ffn, .faa, .frn, .fa, .fas, .clustal">
-                        <label for="alignment_file_input_"
-                            id="alignment_file_input">Upload alignment file
-                            <span id="check" style="color:#92fa5a"></span></label>
-                        <div id="for_alignment_file_name" style="display:none"></div>
-                    </div>
-                    <div>
-                        <label for="alignment_type_select"
-                            style="font-weight:bold;">Select alignment type:</label>
-                        <select id="alignment_type_select"
-                            name="alignment_type_select"
-                            autocomplete="off"
-                            style="font-size: 16px;font-weight:bold;padding:0.3rem 5px 0.3rem 5px;">
-                            <option value="nucleic" selected="selected">Nucleic
-                                acids (DNA/RNA)</option>
-                            <option value="protein">Proteins</option>
-                        </select>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="add_tree_checkbox"
-                            autocomplete="off">
-                        <label for="add_tree_checkbox"><span
-                                data-wenk="⚠️ Make sure that the names of the sequences in your alignment, match the sequences in your Newick file, and don't contain whitespaces."
-                                data-wenk-pos="top" class="wenk-length--fit">Include
-                                tree file</span></label><br>
-                    </div>
-                    <div id="tree_input_wrapper" style="display:none;">
-
-                        <input type="file" id="tree_file_input"
-                            autocomplete="off"
-                            style='display:none;'
-                            accept=".newick, .nwk, .tree, .ph">
-                        <label for="tree_file_input" id="tree_file_input_label">Upload
-                            Newick file <span id="check2" style="color:#92fa5a"></span></label>
-                        <div id="for_tree_file_name" style="display:none"></div>
-                    </div>
-                    <div
-                        style="display:flex;flex-direction:column;align-items:center;margin-bottom:2em;gap:0.5rem;font-size:18px;">
-                        <button class="normal_buttons" id="visualize_button"
-                            disabled>Visualize</button>
-                        <span
-                            style="color:red;display:none;font-size:bold;margin:1rem;margin-bottom:0;text-align: center;"
-                            id="file_error">Error. Invalid alignment file.
-                            Verify it and try again.</span>
-                    </div>
+          </div>
+          <div class="item">
+            <div class="item-header">Coloring and symbols
+              &#9656;</div>
+            <div class="item-content" style="display: none;">
+              <div id="coloring_wrapper" style="color:black">
+                <div style="width: auto; margin: 1rem">
+                  <label for="highlight_color_picker">Highlight color:</label>
+                  <input type="color" id="highlight_color_picker" autocomplete="off"><br>
+                  <label for="other_color">Unknown symbol
+                    color:</label>
+                  <input type="color" id="other_color" autocomplete="off"><br>
+                  <label for="coloring_select">Coloring
+                    scheme:</label>
+                  <br />
+                  <select id="coloring_select" name="coloring_select" autocomplete="off" style="font-size:16px;">
+                    <option value="nucleic">Default
+                      nucleic</option>
+                    <option value="protein">Default
+                      protein</option>
+                    <option value="custom_nucleic">Custom
+                      nucleic</option>
+                    <option value="custom_protein">Custom
+                      protein</option>
+                    <option value="custom_full">User
+                      defined</option>
+                  </select>
+                  <div id="color_chooser" style="margin-top:10px;">
+                    <div id="color_chooser_helper"></div>
+                    <button id="apply_colors" style="display:none;" class="normal_buttons">Apply</button>
+                  </div>
                 </div>
-                <br>
-                <h2>Examples</h2>
-                <div>
-                    <label for="example_alignment_select"
-                        style="font-weight:bold;">Select the dataset:</label>
-                    <select id="example_alignment_select"
-                        autocomplete="off"
-                        name="example_alignment_select"
-                        style="font-size: 16px;font-weight:bold;padding:0.3rem 5px 0.3rem 5px;">
-                        <option data-alignment-type="protein"
-                            value="Example_protein" selected="selected">Example protein</option>
-                        <option data-alignment-type="nucleic"
-                            value="Example_DNA">Example DNA</option>
-                    </select>
-                </div>
-                <br>
-                <button id="example_alignment_button" class="normal_buttons"
-                    style="padding:0.5rem 10px 0.5rem 10px;font-size:18px;">Show
-                    example alignment</button>
+              </div>
             </div>
-        </div>
-        <div id="visualization_page_subpage" class="full_page">
-            <div id="visualization_page">
-                <div class="sidebar noselect" style="display: none" id="sidebar">
-                    <div id="bar_items">
-                        <div
-                            style="display: flex; width: 100%; height: 3rem;margin-bottom:1rem;">
-                            <div
-                                style="text-align:center;width: 100%;line-height: 3rem;font-size:1.5rem;"><b>Additional
-                                    settings</b></div>
-                            <div
-                                style="width: 3rem; height: 100%; display: flex; justify-content: center;align-items: center;text-align:center;padding-right:12px;">
-                                <div id="close_settings">&times;</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="item-header">Coloring and symbols
-                                &#9656;</div>
-                            <div class="item-content" style="display: none;">
-                                <div id="coloring_wrapper" style="color:black">
-                                    <div style="width: auto; margin: 1rem">
-                                        <label for="other_color">Unknown symbol
-                                            color:</label>
-                                        <input type="color" id="other_color"
-                                            autocomplete="off"><br>
-                                        <label for="coloring_select">Coloring
-                                            scheme:</label>
-                                        <br />
-                                        <select id="coloring_select"
-                                            name="coloring_select"
-                                            autocomplete="off"
-                                            style="font-size:16px;">
-                                            <option value="nucleic">Default
-                                                nucleic</option>
-                                            <option value="protein">Default
-                                                protein</option>
-                                            <option value="custom_nucleic">Custom
-                                                nucleic</option>
-                                            <option value="custom_protein">Custom
-                                                protein</option>
-                                            <option value="custom_full">User
-                                                defined</option>
-                                        </select>
-                                        <div id="color_chooser"
-                                            style="margin-top:10px;">
-                                            <div id="color_chooser_helper"></div>
-                                            <button id="apply_colors"
-                                                style="display:none;"
-                                                class="normal_buttons">Apply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="item-header">Diagram settings &#9656;</div>
-                            <div class="item-content" style="display: none;">
-                                <div>
-                                    <input type="checkbox"
-                                        id="allow_moving_nodes"
-                                        autocomplete="off" checked>
-                                    <label for="allow_moving_nodes">Allow nodes
-                                        movement</label><br>
-                                </div>
-                                <div>
-                                    <input type="checkbox" autocomplete="off"
-                                        id="links_out_of_range">
-                                    <label for="links_out_of_range"
-                                        id="show_links_out_of_range_label">
-                                        <span
-                                            data-wenk="Allows displaying links in a situation where both nodes
-                                        are not in the range of the plot, but the link between them is (alignment gaps).
+          </div>
+          <div class="item">
+            <div class="item-header">Diagram settings &#9656;</div>
+            <div class="item-content" style="display: none;">
+              <div>
+                <input type="checkbox" id="allow_moving_nodes" autocomplete="off" checked>
+                <label for="allow_moving_nodes">
+                  <span data-wenk="Allows moving nodes on the (Sankey) diagram by dragging them with the mouse."
+                    data-wenk-pos="top" class="wenk-length--fit">
+                    Allow nodes movement &#9432;
+                  </span>
+                </label><br>
+              </div>
+              <div>
+                <input type="checkbox" autocomplete="off" id="links_out_of_range">
+                <label for="links_out_of_range" id="show_links_out_of_range_label">
+                  <span data-wenk="Allows displaying links in a situation where both nodes
+                                        are not in the currently displayed range of the plot, but the link between them is (caused by gaps in the alignment).
                                         Enabling this option will slow down loading of the plot."
-                                            data-wenk-pos="bottom"
-                                            class="wenk-length--fit">
-                                            Show links out of range &#9432;
-                                        </span>
-                                    </label><br>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item" id="merging_options">
-                            <div class="item-header">Vertical merging &#9656;</div>
-                            <div class="item-content" style="display: none;">
-                                <div id="merging_wrapper">
-                                    <div
-                                        style="display: flex; flex-flow:row nowrap;justify-content:center">
-                                        <button id="add_group"
-                                            class="normal_buttons">Add new group</button>
-                                        <button id="apply_merging"
-                                            class="normal_buttons">Apply
-                                            grouping</button>
-                                    </div>
-                                    <div id="for_draggable"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="resize_bar"></div>
-                </div>
-                <div class="full_page_content_container">
-                    <div id="main_grid">
-                        <div id="settings_control" class="noselect">
-                            <div id="range_controls_wrapper">
-                                <div id="alignment_bar"></div>
-                            </div>
-                            <div
-                                style="display:flex;flex-direction:row;align-items:center;width:100%;justify-content:center">
-                                <input type="number" id="from_column"
-                                    style="margin-right:5px" class="number_div"
-                                    step="1" autocomplete="off">
-                                <button id="move_left" class="normal_buttons">&#60;</button>
-                                <button id="move_right" class="normal_buttons">&#62;</button>
-                                <input type="number" id="to_column"
-                                    style="margin-left:5px" class="number_div"
-                                    step="1" autocomplete="off">
-                            </div>
-                            <div style="align-self:flex-start">
-                                <div>
-                                    <input type="checkbox"
-                                        id="show_column_lines"
-                                        autocomplete="off">
-                                    <label for="show_column_lines">Show lines
-                                        between columns</label><br>
-                                </div>
-                                <div>
-                                    <input type="checkbox"
-                                        id="show_column_numbers"
-                                        autocomplete="off" checked>
-                                    <label for="show_column_numbers">Show column
-                                        numbers</label><br>
-                                </div>
-                                <div>
-                                    <input type="checkbox"
-                                        id="linear_gradient_links"
-                                        autocomplete="off">
-                                    <label for="linear_gradient_links">Gradient
-                                        links color</label><br>
-                                </div>
-                                <div id="merge_nodes_wrapper">
-                                    <input type="checkbox" autocomplete="off"
-                                        id="merge_nodes_vertically">
-                                    <label for="merge_nodes_vertically"
-                                        id="merge_nodes_vertically_label">
-                                        Merge nodes <span
-                                            data-wenk="Simplifies the graph by grouping the nodes and merging them together."
-                                            data-wenk-pos="top"
-                                            class="wenk-length--medium">&#9432;</span>
-                                    </label><br>
-                                </div>
-                            </div>
-                            <div
-                                style="display:flex; flex-flow: row wrap; justify-content:space-evenly; gap: 0.5rem">
-                                <button id="save_image"
-                                    class="additional_buttons normal_buttons">&#x2913;
-                                    Save image</button>
-                                <button id="settings_button"
-                                    class="additional_buttons normal_buttons">&#9881;
-                                    More settings</button>
-                                <button id="clear_button"
-                                    class="additional_buttons normal_buttons">Clear
-                                    highlighted sequences</button>
-                            </div>
-                        </div>
-                        <div id="sankey_diagram_container"></div>
-
-                        <div id="for_buttons"></div>
-                        <div id="for_tree" style="display: none;"></div>
-                        <div id="for_letters"></div>
-                    </div>
-                </div>
-
+                    data-wenk-pos="bottom" class="wenk-length--fit">
+                    Show links out of range &#9432;
+                  </span>
+                </label><br>
+              </div>
             </div>
-        </div>
-        <div id="manual" style="display:none;" class="full_page">
-            <div class="full_page_content_container">
-                <h1>How to use the app?</h1>
-                <h3>Uploading a file</h3>
-                <p>To visualize the alignment simply load your file by clicking
-                    <span style="color:var(--main-color)"><b>Upload alignment
-                            file</b></span>.
-                    Be sure that the alignment consists of at least two
-                    sequences.
-                    It is recommended to replace spaces in sequence names with
-                    an underscore (_),
-                    as the software used for processing the files, i.e.
-                    Biopython, tends to truncate them.<br /><br />
-                    Sequence Flow accepts three MSA formats: <b>fasta</b>, <b>msf</b>
-                    and <b>clustal</b>,
-                    and allows the following file extensions: .msf, .fasta,
-                    .fna, .ffn, .faa, .frn, .fa, .clustal.<br /><br />
-                    After the file is loaded, <b>select the alignment type</b>.
-                    It is important to choose the right type because
-                    it implies the order of the nodes in the graph and cannot be
-                    changed later.<br /><br />
-                    Then, click on the <span style="color: var(--second-color);"><b>Visualize</b></span>
-                    button.<br /><br />
-                    It is possible to attach a file containing a tree in the
-                    Newick format to the visualization.
-                    To do so, check the checkbox <b>Include tree file</b>, and
-                    then
-                    load your file by clicking <span
-                        style="color:var(--main-color)"><b>Upload Newick file</b></span>.<br /><br />
-                    You can also explore available examples by clicking <span
-                        style="color: var(--second-color);"><b>Show example
-                            alignment</b></span>.<br />
-                </p>
-                <h3>Exploring the visualization</h3>
-                <p>
-                    Your Multiple Sequence Alignment is parsed to the FASTA
-                    format.
-                    It is then represented as a graph inspired by the <a
-                        target="_blank"
-                        style="color:var(--main-color);font-weight:bold;"
-                        href="https://academic.oup.com/bioinformatics/article/18/3/452/236691">Partial
-                        Order Alignment</a> model.
-                    The visualization is an interactive Sankey diagram.
-                    Read more about this concept in the <span
-                        id='about_the_project_link'
-                        style="color:var(--second-color);cursor:pointer"><b><u>ABOUT
-                                THE PROJECT</u></b></span>
-                    section.<br /><br />
-                    The app provides many features, that will help you explore
-                    the alignment, including:
-                    <div style="padding-left: 3rem;">
-                        <ul>
-                            <li>Manual correction of node arrangement - you can
-                                move the nodes in columns by dragging them with
-                                your mouse</li>
-                            <li>Changing the range of the visualization to a
-                                selected alignment fragment - click the
-                                left/right arrow key on your keyboard, move the
-                                scroll bar, or use the numeric inputs to see the
-                                desired alignment fragment</li>
-                            <li>Customizability of view - use the checkboxes
-                                near the main visualization or click the <span
-                                    style="color: var(--second-color);"><b>More
-                                        settings button</b></span> to explore
-                                various customization options, including nodes’
-                                colouring or modifying links' appearance</li>
-                            <li>Highlighting the selected subset of sequences -
-                                clicking the sequence name next to the matrix
-                                alignment representation (or phylogenetic tree,
-                                if provided), will highlight the flow of that
-                                sequence through the Sankey diagram (as well as
-                                the appropriate branch in a phylogenetic tree,
-                                if provided)</li>
-                            <li>Simplifying the graph - use the <b>Merge nodes</b>
-                                checkbox (available for protein alignments), to
-                                aggregate the nodes in columns based on their
-                                physicochemical properties. Custom nodes
-                                grouping can be also defined inside the <b>Vertical
-                                    merging</b> settings section</li>
-                        </ul>
-                    </div>
-                </p>
-            </div>
-        </div>
-        <div id="about_us" style="display:none;" class="full_page">
-            <div class="full_page_content_container">
-                <h1>About the project</h1>
-                <h3>Partial Order Alignment</h3>
-                <p>Partial Order Alignment (POA) is an acyclic directed graph, whose vertices are residues of the aligned
-                    sequences, and the edges connect successive residues in these sequences. In addition, the set of vertices is
-                    divided into clusters, which are equivalent to the columns in the standard alignment model, with identical
-                    symbols from aligned sequences in each cluster combined into a single vertex. As a result, the aligned
-                    sequences are represented by paths in the graph, and the common vertices of these paths are their identical
-                    residues. The POA model proved useful in several applications (e.g. sequencing reads assembly and
-                    pangenome structure exploration).<br></p>
-                <h3>Sankey Diagrams</h3>
-                <p>Sankey diagram is a type of flow chart first used
-                    in 1898 to depict the energy efficiency of a steam
-                    engine, in which the width of the edges is proportional to
-                    the flow rate. Sankey diagrams provide a more intuitive
-                    alignment visualization than
-                    commonly used graphical representations of nodes
-                    and edges.</p>
-                <h3><span style="color: var(--main-color);">Sequence Flow</span></h3>
-                <p>
-                    Sequence Flow provides interactive visualization of POAs as Sankey diagrams.
-                    It allows inputting multiple sequence alignment files in the most common formats,
-                    including fasta, clustal and msa. Sequence Flow provides integrated visualization of classic alignment,
-                    POA and phylogenetic tree. For the purpose of visualizing alignments, Sequence Flow uses
-                    <a target="_blank"
-                        href="https://github.com/Krzysiekzd/SanKEY.js">SanKEY.js</a> – a JavaScript library we developed, tailored for huge Sankey diagrams. Check out the <span
-                    id='manual_link'
-                    style="color:var(--second-color);cursor:pointer"><u><b>MANUAL</b></u></span> section
-                    for more information about the Sequence Flow features for interactive alignment exploration.
-                </p>
-                <h3>Additional Information</h3>
-                <!-- <p>
-                    For a more detailed description of this project, see <a target="_blank"
-                    href="https://students.mimuw.edu.pl/~kz419420/bt_sequence_flow.pdf"> this</a> document.
-                </p> -->
-                <p>
-                    We appreciate every feedback. If you have experienced any issues with the app
-                    or have other suggestions, please write to: <span style="color:purple">dojer@mimuw.edu.pl</span>
-                </p>
-                <p>
-                    Project created by Krzysztof Zdąbłasz under the supervision of Norbert Dojer, supported by Anna Lisiecka.
-                </p>
-                <p>
-                    <i>This work was supported by the IDUB grant of the Polish Ministry of Science and Higher Education no 01/IDUB/2019/04.</i>
-                </p>
-                <div style="width:100%;display: flex;flex-wrap:wrap;justify-content:space-evenly">
-                    <a target="_blank"
-                    href="https://www.mimuw.edu.pl/en"><img
-                    src="{{ url_for('static', filename = 'images/MIM_logo.png')}}"
-                    alt="MIM UW" style="height:10rem;display:block;" /></a>
-                    <a target="_blank"
-                    href="https://github.com/Krzysiekzd/SanKEY.js"><img
-                    src="{{ url_for('static', filename = 'images/sankey_logo.png')}}"
-                    alt="SanKEY.js" style="height:10rem;display:block;" /></a>
+          </div>
+          <div class="item" id="merging_options">
+            <div class="item-header">Vertical merging &#9656;</div>
+            <div class="item-content" style="display: none;">
+              <div id="merging_wrapper">
+                <div style="display: flex; flex-flow:row nowrap;justify-content:center">
+                  <button id="add_group" class="normal_buttons">Add new group</button>
+                  <button id="apply_merging" class="normal_buttons">Apply
+                    grouping</button>
                 </div>
+                <div id="for_draggable"></div>
+              </div>
             </div>
+          </div>
+          <div class="item">
+            <div class="item-header">Download image options &#9656;</div>
+            <div class="item-content" style="display: none;">
+              <div>
+                <label for="image_format_select">Image
+                  format:</label>
+                <select id="image_format_select" name="image_format_select" autocomplete="off" style="font-size:16px;">
+                  >
+                  <option value="png">PNG</option>
+                  <option selected value="svg">SVG</option>
+                </select>
+              </div>
+              <div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div id="letter_info_div" style="display:none"></div>
+        <div id="resize_bar"></div>
+      </div>
+      <div class="full_page_content_container">
+        <div id="main_grid">
+          <div id="settings_control" class="noselect">
+            <div id="range_controls_wrapper">
+              <div id="alignment_bar"></div>
+            </div>
+            <div style="display:flex;flex-direction:row;align-items:center;width:100%;justify-content:center">
+              <input type="number" id="from_column" style="margin-right:5px" class="number_div" step="1"
+                autocomplete="off">
+              <button id="move_left" class="normal_buttons">&#60;</button>
+              <button id="move_right" class="normal_buttons">&#62;</button>
+              <input type="number" id="to_column" style="margin-left:5px" class="number_div" step="1"
+                autocomplete="off">
+            </div>
+            <div style="align-self:flex-start">
+              <div>
+                <input type="checkbox" id="show_column_lines" autocomplete="off">
+                <label for="show_column_lines">Show lines
+                  between columns</label><br>
+              </div>
+              <div>
+                <input type="checkbox" id="show_column_numbers" autocomplete="off" checked>
+                <label for="show_column_numbers">Show column
+                  numbers</label><br>
+              </div>
+              <div>
+                <input type="checkbox" id="linear_gradient_links" autocomplete="off">
+                <label for="linear_gradient_links">Gradient
+                  links color</label><br>
+              </div>
+              <div id="merge_nodes_wrapper">
+                <input type="checkbox" autocomplete="off" id="merge_nodes_vertically">
+                <label for="merge_nodes_vertically" id="merge_nodes_vertically_label">
+                  Merge nodes <span
+                    data-wenk="Simplifies the (Sankey) diagram by grouping the nodes and merging them together. Groups can be modified and added in the settings."
+                    data-wenk-pos="top" class="wenk-length--medium">&#9432;</span>
+                </label><br>
+              </div>
+            </div>
+            <div style="display:flex; flex-flow: row wrap; justify-content:space-evenly; gap: 0.5rem">
+              <button id="save_image" class="additional_buttons normal_buttons">&#x2913;
+                Save image</button>
+              <button id="settings_button" class="additional_buttons normal_buttons">&#9881;
+                More options</button>
+              <button id="clear_button" class="additional_buttons normal_buttons">Clear
+                highlighted sequences</button>
+            </div>
+          </div>
+          <div id="sankey_diagram_container"></div>
 
-        <link href="https://phylotree.hyphy.org/phylotree.css" rel="stylesheet">
-        <link rel="stylesheet"
-            href="{{url_for('static', filename = 'stylesheets/main.css')}}">
-        <link rel="stylesheet"
-            href="{{url_for('static', filename = 'stylesheets/SanKEY_styles.css')}}">
-        <link rel="stylesheet"
-            href="{{url_for('static', filename = 'stylesheets/drag_and_drop.css')}}">
-        <link rel="stylesheet"
-            href="{{url_for('static', filename = 'stylesheets/nouislider.css')}}">
-        <link rel="stylesheet"
-            href="{{url_for('static', filename = 'stylesheets/resizable_settings_sidebar.css')}}">
-        <link rel="stylesheet"
-            href="https://cdn.rawgit.com/tiaanduplessis/wenk/master/dist/wenk.css">
-        <script>
-            function hideLoadingScreen() {
-                document.getElementById('loading_screen').style.display = 'none';
-            }
-        </script>
-    </body>
+          <div id="for_buttons"></div>
+          <div id="for_tree" style="display: none;"></div>
+          <div id="for_letters"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div id="manual" style="display:none;" class="full_page">
+    <div class="full_page_content_container">
+      <h1>How to use the app?</h1>
+      <h3>Uploading a file</h3>
+      <p>To visualize the alignment simply load your file by clicking
+        <span style="color:var(--main-color)"><b>Upload alignment
+            file</b></span>.
+        Make sure that the alignment consists of at least two
+        sequences.
+        It is recommended to replace spaces in sequence names with
+        the underscore (_),
+        as the software used for processing the files, i.e.
+        Biopython, tends to truncate names with whitespaces.<br /><br />
+        Sequence Flow accepts 5 MSA formats: <b>fasta</b>, <b>msf</b>, <b>clustal</b>, <b>phylip</b>, and
+        <b>stockholm</b>,
+        and allows the following file extensions: .msf, .fasta,
+        .fna, .ffn, .faa, .frn, .fa, .clustal, .aln, .phy, .phylip, .stk, .sto, .sth, .stockholm.<br /><br />
+        After the file is loaded, <b>select the alignment type</b>.
+        It is important to choose the right type because
+        it implies the order of the nodes in the graph and cannot be
+        changed later.<br /><br />
+        Then, click on the <span style="color: var(--second-color);"><b>Visualize</b></span>
+        button.<br /><br />
+        It is possible to attach a file containing a tree in the
+        Newick format to the visualization.
+        To do so, check the <b>Include tree file</b> checkbox, and
+        then
+        load your file by clicking <span style="color:var(--main-color)"><b>Upload Newick file</b></span>.<br /><br />
+        You can also explore available examples by clicking <span style="color: var(--second-color);"><b>Show example
+            alignment</b></span>.<br />
+      </p>
+      <h3>Exploring the visualization</h3>
+      <p>
+        Your Multiple Sequence Alignment is parsed to the FASTA
+        format.
+        It is then represented as a graph inspired by the <a target="_blank"
+          style="color:var(--main-color);font-weight:bold;"
+          href="https://academic.oup.com/bioinformatics/article/18/3/452/236691">Partial
+          Order Alignment</a> model.
+        The visualization is an interactive Sankey diagram.
+        Read more about this concept in the <span id='about_the_project_link'
+          style="color:var(--second-color);cursor:pointer"><b><u>ABOUT
+              THE PROJECT</u></b></span>
+        section.<br /><br />
+        The app provides many features, that will help you explore
+        the alignment, including:
+      <div style="padding-left: 3rem;">
+        <ul>
+          <li>Manual correction of node arrangement - you can
+            move the nodes in columns by dragging them with
+            your mouse</li>
+          <li>Changing the range of the visualization to a
+            selected alignment fragment - click the
+            left/right arrow key on your keyboard, move the
+            scroll bar, or use the numeric inputs to see the
+            desired alignment fragment</li>
+          <li>Customizability of view - use the checkboxes
+            near the main visualization or click the <span style="color: var(--second-color);"><b>More
+                settings button</b></span> to explore
+            various customization options, including nodes'
+            colouring or modifying links' appearance</li>
+          <li>Highlighting the selected subset of sequences -
+            clicking the sequence name next to the matrix
+            alignment representation (or phylogenetic tree,
+            if provided), will highlight the flow of that
+            sequence through the Sankey diagram (as well as
+            the appropriate branch in a phylogenetic tree,
+            if provided)</li>
+          <li>Simplifying the graph - use the <b>Merge nodes</b>
+            checkbox (available for protein alignments), to
+            aggregate the nodes in columns based on their
+            physicochemical properties. Custom nodes
+            grouping can be also defined inside the <b>Vertical
+              merging</b> settings section</li>
+        </ul>
+      </div>
+      <p>
+        Note: Although the application lets you select any range for alignment, we recommend keeping the size within a
+        reasonable limit. Large ranges can reduce readability, slow down browser performance, and may cause rendering
+        issues with smaller elements. Displaying more than 100-200 columns simultaneously is generally unnecessary and
+        can impact usability.
+      </p>
+      </p>
+    </div>
+  </div>
+  <div id="about_us" style="display:none;" class="full_page">
+    <div class="full_page_content_container">
+      <h1>About the project</h1>
+      <h3>Partial Order Alignment</h3>
+      <p>Partial Order Alignment (POA) is an acyclic directed graph, whose nodes are residues of the aligned
+        sequences, and the links connect successive residues in these sequences. In addition, the set of nodes is
+        divided into clusters, which are equivalent to the columns in the standard alignment model, with identical
+        symbols from aligned sequences in each cluster combined into a single vertex. As a result, the aligned
+        sequences are represented by paths in the graph, and the common nodes of these paths are their identical
+        residues. The POA model proved useful in several applications (e.g. sequencing reads assembly and
+        pangenome structure exploration).<br></p>
+      <h3>Sankey Diagrams</h3>
+      <p>Sankey diagram is a type of flow chart first used
+        in 1898 to depict the energy efficiency of a steam
+        engine, in which the width of the links is proportional to
+        the flow rate. Sankey diagrams provide a more intuitive
+        alignment visualization than
+        commonly used graphical representations of nodes
+        and links.</p>
+      <h3><span style="color: var(--main-color);">Sequence Flow</span></h3>
+      <p>
+        Sequence Flow is a tools which allows to browse interactive visualization of POAs as Sankey diagrams.
+        It accepts multiple sequence alignment files in the most common formats,
+        including fasta, clustal, msf, phylip, and stockholm. Sequence Flow provides integrated visualization of classic
+        alignment,
+        POA and phylogenetic tree. For the purpose of visualizing alignments, Sequence Flow uses
+        <a target="_blank" href="https://github.com/Krzysiekzd/SanKEY.js">SanKEY.js</a> - a JavaScript library we
+        developed, tailored for huge Sankey diagrams. Check out the <span id='manual_link'
+          style="color:var(--second-color);cursor:pointer"><u><b>MANUAL</b></u></span> section
+        for more information about the Sequence Flow features for interactive alignment exploration.
+      </p>
+      <h3>Example datasets</h3>
+      <p>
+        The service provides a couple of alignment examples, that can be interactively explored:
+      <div style="padding-left: 3rem;">
+        <ul>
+          <li><b>msl_ref7 (protein)</b> - Dataset from BAliBASE 2 protein alignment benchmark database, reference set 7.
+          </li>
+          <li><b>mucin2 (nuclein)</b> - Dataset, which illustrates a fragment of the MUCIN_REGION_2 reference region and
+            7 alternative loci. The MUCIN2 region is located on chromosome 3, with the fragment spanning positions
+            195702743 to 195703637. </li>
+          <li><b>Long reads + consensus (nucleic)</b> - Nucleic dataset highlighting the challenges associated with long
+            reads, which often contain multiple errors. The dataset consists of 55 reads, and their consensus sequence.
+          </li>
+          <li><b>Simulated (protein, with tree)</b> - Amino-acids-based alignment, simulated using the <a
+              target="_blank" href="http://www.iqtree.org/">IQ-TREE</a> tool.
+            Contains phylogenetic tree. </li>
+          <li><b>Simulated (nucleic, with tree)</b> - Nucleic alignment, simulated using the <a target="_blank"
+              href="http://www.iqtree.org/">IQ-TREE</a> tool. Contains
+            phylogenetic tree.
+          </li>
+        </ul>
+      </div>
+      </p>
+      <h3>Additional Information</h3>
+      <p>
+        We appreciate every feedback. If you have experienced any issues with the app
+        or have other suggestions, please write to: <span style="color:purple">dojer@mimuw.edu.pl</span>
+      </p>
+      <p>
+        Project created by Krzysztof Zdąbłasz under the supervision of Norbert Dojer, supported by Anna Lisiecka.
+      </p>
+      <p>
+        <i>This work was supported by the IDUB grant of the Polish Ministry of Science and Higher Education no
+          01/IDUB/2019/04.</i>
+      </p>
+      <div style="width:100%;display: flex;flex-wrap:wrap;justify-content:space-evenly">
+        <a target="_blank" href="https://www.mimuw.edu.pl/en"><img
+            src="{{ url_for('static', filename = 'images/MIM_logo.png')}}" alt="MIM UW"
+            style="height:10rem;display:block;" /></a>
+        <a target="_blank" href="https://github.com/Krzysiekzd/SanKEY.js"><img
+            src="{{ url_for('static', filename = 'images/sankey_logo.png')}}" alt="SanKEY.js"
+            style="height:10rem;display:block;" /></a>
+      </div>
+    </div>
+  </div>
+  <div id="letter_info_div" style="display:none"></div>
+
+  <link href="https://phylotree.hyphy.org/phylotree.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static', filename = 'stylesheets/main.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename = 'stylesheets/SanKEY_styles.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename = 'stylesheets/drag_and_drop.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename = 'stylesheets/nouislider.css')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename = 'stylesheets/resizable_settings_sidebar.css')}}">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/tiaanduplessis/wenk/master/dist/wenk.css">
+  <script>
+    function hideLoadingScreen() {
+      document.getElementById('loading_screen').style.display = 'none';
+    }
+  </script>
+</body>
+
 </html>

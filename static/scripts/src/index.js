@@ -133,7 +133,8 @@ async function send_sequences_to_server(form, example=false){
 	});
 
 	if (!response.ok){
-		error_div.textContent='Error. Invalid alignment file. Verify it and try again.';
+		const errorResponse = await response.text();
+		error_div.textContent=`Error. ${errorResponse}. Verify it and try again.`;
 		error_div.style.removeProperty('display');
 		return false;
 	}
@@ -239,7 +240,7 @@ example_alignment_button.addEventListener('click', async (e)=>{
 		return;
 	}
 	const {sequences, tree:newick_string} = await response.json();
-	const tree = new phylotree(newick_string);
+	const tree = newick_string ? new phylotree(newick_string): undefined;
 	visualize(sequences, alignment_type, tree);
 	e.target.disabled = false;
 });

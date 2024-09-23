@@ -84,8 +84,8 @@ footer{
 
 /* STARTING PAGE SECTION */
 .full_page{
-    width: 90%;
-    max-width: 1600px;
+    width: 93%;
+    /* max-width: 1600px; */
     min-width: calc(var(--sankey-plot-width) + 40px );
     background-color: var(--basic-color);
     display: flex;
@@ -102,7 +102,7 @@ footer{
     overflow-x: auto;
 }
 .full_page_content_container{
-    width: 80%;
+    width: 90%;
     overflow-x: auto;
     margin-left: auto;
     margin-right: auto;
@@ -407,4 +407,10 @@ footer{
 #manual h3,
 #about_us h3 {
     padding-left: 1.5rem;
+}
+
+
+.highlighted_matrix_element {
+  filter: brightness(1.15);
+  color: rgba(59, 57, 57, 0.879);
 }
