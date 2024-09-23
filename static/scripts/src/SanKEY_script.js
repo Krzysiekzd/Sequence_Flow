@@ -1,6 +1,4 @@
-/* eslint-disable linebreak-style */
 /* eslint-disable no-mixed-spaces-and-tabs */
-
 class PlotCreator {
 	// 1. node_coordinates
 	/**
@@ -103,53 +101,53 @@ class PlotCreator {
    * @param {number} last_column - Index of first column that won't be shown.
    * @param {settings} settings - Object with additional plot settings.
    */
-	#plot_width; //architectural, unchangable
-	#plot_height; //architectural, unchangable
-	#vertical_gap_between_nodes; //architectural, unchangable
-	#node_percent_of_column_width; //architectural, unchangable
-	#link_min_arc; //architectural, unchangable
-	#link_arc_iterated_increase; //architectural, unchangable
+	#plot_width;
+	#plot_height;
+	#vertical_gap_between_nodes;
+	#node_percent_of_column_width;
+	#link_min_arc;
+	#link_arc_iterated_increase;
 
-	#first_column; // interactive, add getter, improve setter
-	#last_column; // interactive, add getter, improve setter
+	#first_column;
+	#last_column;
 
-	#show_column_lines; // visual, has setter, add getter
-	#show_column_names; // visual, has setter,  add getter
-	#node_move_y; // visual, has setter,  add getter
-	#linear_gradient_links; // visual, has setter,  add getter
+	#show_column_lines;
+	#show_column_names;
+	#node_move_y;
+	#linear_gradient_links;
 
-	#show_links_out_of_range; // visual*, add setter and getter
-	#plot_background_color; // visual, add setter and getter
-	#default_links_color; // visual, add setter and getter
-	#default_nodes_color; // visual, add setter and getter
-	#default_links_opacity; // visual, add setter and getter
-	#default_gradient_links_opacity; // visual, add setter and getter
-	#default_sublinks_color; // visual, add setter and getter
-	#default_sublinks_opacity; // visual, add setter and getter
-	#hover_node_cursor; // visual, add setter and getter
-	#hover_link_cursor; // visual, add setter and getter
-	#grabbing_node_cursor; // visual, add setter and getter
+	#show_links_out_of_range;
+	#plot_background_color;
+	#default_links_color;
+	#default_nodes_color;
+	#default_links_opacity;
+	#default_gradient_links_opacity;
+	#default_sublinks_color;
+	#default_sublinks_opacity;
+	#hover_node_cursor;
+	#hover_link_cursor;
+	#grabbing_node_cursor;
 
-	#on_node_click_function; // interactivity, add setter and getter
-	#on_link_click_function; // interactivity, add setter and getter
-	#on_node_hover_function; // interactivity, add setter and getter
-	#on_link_hover_function; // interactivity, add setter and getter
+	#on_node_click_function;
+	#on_link_click_function;
+	#on_node_hover_function;
+	#on_link_hover_function;
 
-	#label_colors_object; // add setter and getter
+	#label_colors_object;
 
-	lines_style_object; // add special setter and getter
-	column_names_style_object; // add special setter and getter
+	lines_style_object;
+	column_names_style_object;
 
-	#column_names; // ?
-	#start_node_count_from; // ?
-	#start_column_count_from; // ?
-	nodes_data; // ?
-	links_data_structure; // ?
-	nodes_data_structure; // ?
+	#column_names;
+	#start_node_count_from;
+	#start_column_count_from;
+	nodes_data;
+	links_data_structure;
+	nodes_data_structure;
 
-	#dom_container; // internal, no setters or getters
-	#longest_link_length; // internal, no setters or getters
-	#last_column_width; // internal, no setters or getters
+	#dom_container;
+	#longest_link_length;
+	#last_column_width;
 
 	sankey_plot;
 	constructor(
@@ -239,8 +237,7 @@ class PlotCreator {
 		this.#default_gradient_links_opacity =
       default_settings.default_gradient_links_opacity;
 		this.#default_sublinks_color = default_settings.default_sublinks_color;
-		this.#default_sublinks_opacity =
-      default_settings.default_sublinks_opacity;
+		this.#default_sublinks_opacity = default_settings.default_sublinks_opacity;
 		this.#label_colors_object = default_settings.label_colors_object;
 		this.#column_names = default_settings.column_names;
 		this.#start_node_count_from = default_settings.start_node_count_from;
@@ -733,7 +730,9 @@ class PlotCreator {
 		this.nodes_data = undefined;
 		this.#dom_container.remove();
 	}
-
+	/**
+   * Setter for "show_links_out_of_range" setting. Refreshes the plot.
+   */
 	/**
    * Setter for "show_links_out_of_range" setting. Refreshes the plot.
    */
@@ -749,29 +748,6 @@ class PlotCreator {
 		this.reloadPlot();
 	}
 	/**
-   * Getter for "show_links_out_of_range" setting.
-   * @returns {*}
-   */
-	getShowLinksOutOfRange() {
-		return this.#show_links_out_of_range;
-	}
-	setPlotBackgroundColor() {}
-	/**
-   * Getter for "plot_background_color" setting.
-   * @returns {*}
-   */
-	getPlotBackgroundColor() {
-		return this.#plot_background_color;
-	}
-	setDefaultLinksColor() {}
-	/**
-   * Getter for "default_links_color" setting.
-   * @returns {*}
-   */
-	getDefaultLinksColor() {
-		return this.#default_links_color;
-	}
-	/**
    * Setter for "default_links_color" setting.
    */
 	setDefaultNodesColor(color) {
@@ -779,69 +755,14 @@ class PlotCreator {
 		this.reloadPlot();
 	}
 	/**
-   * Getter for "default_nodes_color" setting.
-   * @returns {*}
+   * Setter for "default_links_color" setting. Refreshes the plot.
    */
-	getDefaultNodesColor() {
-		return this.#default_nodes_color;
-	}
-	setDefaultLinksOpacity() {}
-	/**
-   * Getter for "default_links_opacity" setting.
-   * @returns {*}
-   */
-	getDefaultLinksOpacity() {
-		return this.#default_links_opacity;
-	}
-	setDefaultGradientLinksOpacity() {}
-	/**
-   * Getter for "default_gradient_links_opacity" setting.
-   * @returns {*}
-   */
-	getDefaultGradientLinksOpacity() {
-		return this.#default_gradient_links_opacity;
-	}
-	setDefaultSublinksColor() {}
-	/**
-   * Getter for "default_sublinks_color" setting.
-   * @returns {*}
-   */
-	getDefaultSublinksColor() {
-		return this.#default_sublinks_color;
-	}
-	setDefaultSublinksOpacity() {}
-	/**
-   * Getter for "default_sublinks_opacity" setting.
-   * @returns {*}
-   */
-	getDefaultSublinksOpacity() {
-		return this.#default_sublinks_opacity;
-	}
-	setHoverNodeCursor() {}
-	/**
-   * Getter for "hover_node_cursor" setting.
-   * @returns {*}
-   */
-	getHoverNodeCursor() {
-		return this.#hover_node_cursor;
-	}
-	setHoverLinkCursor() {}
-	/**
-   * Getter for "hover_link_cursor" setting.
-   * @returns {*}
-   */
-	getHoverLinkCursor() {
-		return this.#hover_link_cursor;
-	}
-	setGrabbingNodeCursor() {}
-	/**
-   * Getter for "grabbing_node_cursor" setting.
-   * @returns {*}
-   */
-	getGrabbingNodeCursor() {
-		return this.#grabbing_node_cursor;
+	setDefaultSublinksColor(color) {
+		this.#default_sublinks_color = color;
+		this.reloadPlot();
 	}
 }
+
 class SankeyPlot {
 	constructor(
 		dom_container,
@@ -1069,12 +990,16 @@ class SankeyPlot {
 			from_label: f_label,
 			to_label: t_label,
 			value: value,
-			sublink_data: sublink_index ? link_data['sublinks'][sublink_index] : undefined
+			sublink_data: sublink_index
+				? link_data['sublinks'][sublink_index]
+				: undefined,
 		};
 	}
 	#addEventListeners() {
 		////          MOUSE EVENT LISTENERS DEFINED BY USER
-		const is_mozilla = navigator.userAgent.toLocaleLowerCase().includes('firefox');
+		const is_mozilla = navigator.userAgent
+			.toLocaleLowerCase()
+			.includes('firefox');
 		let mozilla_is_moving = false;
 
 		this.dom_node.addEventListener('click', (e) => {
@@ -1084,16 +1009,19 @@ class SankeyPlot {
 				return;
 			}
 
-			if (e.target.getAttribute('identifier') === 'SankeyNode' && this.on_node_click_function) {
+			if (
+				e.target.getAttribute('identifier') === 'SankeyNode' &&
+        this.on_node_click_function
+			) {
 				const node_div = e.target;
 				const selected_node =
-            this.nodes[node_div.getAttribute('column')][
-            	node_div.getAttribute('position')
-            ];
+          this.nodes[node_div.getAttribute('column')][
+          	node_div.getAttribute('position')
+          ];
 				const node_data =
-            this.nodes_data_structure[selected_node.column][
-            	selected_node.position
-            ]['properties_object'];
+          this.nodes_data_structure[selected_node.column][
+          	selected_node.position
+          ]['properties_object'];
 				this.on_node_click_function(
 					this.#getNodeInfo(e),
 					node_data,
@@ -1102,51 +1030,59 @@ class SankeyPlot {
 				);
 			}
 
-			if (e.target.getAttribute('identifier') === 'SankeyLink' && this.on_link_click_function) {
+			if (
+				e.target.getAttribute('identifier') === 'SankeyLink' &&
+        this.on_link_click_function
+			) {
 				const link_div = e.target;
 				const link_data =
-            this.links_data[e.target.getAttribute('links_array_id')];
+          this.links_data[e.target.getAttribute('links_array_id')];
 				this.on_link_click_function(
 					this.#getLinkInfo(e),
 					link_data,
 					link_div,
 					e
 				);
-				
 			}
 		});
 		////          MOUSE EVENT LISTENERS TO MOVE NODES
 		this.dom_node.addEventListener('pointerdown', (e) => {
-			if (e.target.getAttribute('identifier') !== 'SankeyNode') {return;}
+			if (e.target.getAttribute('identifier') !== 'SankeyNode') {
+				return;
+			}
 			if (this.node_info_div) {
 				this.dom_container.removeChild(this.node_info_div);
 				this.node_info_div = undefined;
 			}
 			this.selected_node =
-          this.nodes[e.target.getAttribute('column')][
-          	e.target.getAttribute('position')
-          ];
+        this.nodes[e.target.getAttribute('column')][
+        	e.target.getAttribute('position')
+        ];
 			this.selected_node.mouse_locked = true;
-			this.cursor_distance_from_node_top = Math.abs(e.clientY - this.dom_node.getBoundingClientRect().top - this.selected_node.current_y);
+			this.cursor_distance_from_node_top = Math.abs(
+				e.clientY -
+          this.dom_node.getBoundingClientRect().top -
+          this.selected_node.current_y
+			);
 			this.selected_node.dom_rectangle.classList.add('focused_SankeyNode');
 			this.dom_node.style.cursor = this.grabbing_node_cursor;
-		}
-		);
+		});
 		this.dom_node.addEventListener('pointermove', (e) => {
 			if (!this.selected_node || !this.selected_node.mouse_locked) {
 				return;
 			}
-			if (is_mozilla){
+			if (is_mozilla) {
 				mozilla_is_moving = true;
 			}
 			this.selected_node.move(
 				e.clientX,
 				e.clientY - this.dom_node.getBoundingClientRect().top
 			);
-			
 		});
 		this.dom_node.addEventListener('pointerup', (e) => {
-			if (!this.selected_node) {return;}
+			if (!this.selected_node) {
+				return;
+			}
 			this.selected_node.mouse_locked = false;
 			this.selected_node.dom_rectangle.classList.remove('focused_SankeyNode');
 			this.selected_node = undefined;
@@ -1156,30 +1092,32 @@ class SankeyPlot {
                 for (let i in this.nodes){
                     for (let j in this.nodes[i]){
                         this.nodes[i][j].redraw()}}*/
-			
 		});
 		////          MOUSE EVENT LISTENERS TO SHOW LINKS OR NODES INFO
 		this.dom_node.addEventListener('pointerover', (e) => {
 			// if node hovered
-			if (e.target.getAttribute('identifier') === 'SankeyNode' && !this.selected_node) {
+			if (
+				e.target.getAttribute('identifier') === 'SankeyNode' &&
+        !this.selected_node
+			) {
 				this.dom_node.style.cursor = this.hover_node_cursor;
 				this.mouseovered_node =
-            this.nodes[e.target.getAttribute('column')][
-            	e.target.getAttribute('position')
-            ];
+          this.nodes[e.target.getAttribute('column')][
+          	e.target.getAttribute('position')
+          ];
 
 				let text_content = undefined;
 				// execute callback function
 				if (this.on_node_hover_function) {
 					const div_ = e.target;
 					const snode_ =
-              this.nodes[div_.getAttribute('column')][
-              	div_.getAttribute('position')
-              ];
+            this.nodes[div_.getAttribute('column')][
+            	div_.getAttribute('position')
+            ];
 					const node_d_ =
-              this.nodes_data_structure[snode_.column][snode_.position][
-              	'properties_object'
-              ];
+            this.nodes_data_structure[snode_.column][snode_.position][
+            	'properties_object'
+            ];
 					text_content = this.on_node_hover_function(
 						this.#getNodeInfo(e),
 						node_d_,
@@ -1195,14 +1133,14 @@ class SankeyPlot {
 				this.dom_container.appendChild(node_info_div);
 				// position info
 				let potential_y_coord =
-            this.mouseovered_node.current_y -
-            node_info_div.offsetHeight +
-            this.dom_container.getBoundingClientRect().top -
-            5;
+          this.mouseovered_node.current_y -
+          node_info_div.offsetHeight +
+          this.dom_container.getBoundingClientRect().top -
+          5;
 				let potential_x_coord =
-            this.mouseovered_node.current_x +
-            this.dom_container.getBoundingClientRect().left +
-            (this.mouseovered_node.width - node_info_div.offsetWidth) / 2;
+          this.mouseovered_node.current_x +
+          this.dom_container.getBoundingClientRect().left +
+          (this.mouseovered_node.width - node_info_div.offsetWidth) / 2;
 				potential_y_coord = potential_y_coord > 0 ? potential_y_coord : 0;
 				potential_x_coord = potential_x_coord > 0 ? potential_x_coord : 0;
 				if (potential_y_coord === 0) {
@@ -1211,7 +1149,6 @@ class SankeyPlot {
 				node_info_div.style.top = `${potential_y_coord}px`;
 				node_info_div.style.left = `${potential_x_coord}px`;
 				this.node_info_div = node_info_div;
-				
 			}
 			// if link hovered
 			else if (e.target.getAttribute('identifier') === 'SankeyLink') {
@@ -1294,22 +1231,26 @@ class SankeyPlot {
 	}
 	#createColumnNames() {
 		const MAX_NUMBER_OF_NAMES_IN_RANGE = 10;
-		const n_current_range = this.last_column-this.first_column; 
+		const n_current_range = this.last_column - this.first_column;
 
-		const increment = Math.ceil(n_current_range/MAX_NUMBER_OF_NAMES_IN_RANGE);
-		const all_start_from = Math.floor((this.nodes_data_structure.length % increment)/2);
+		const increment = Math.ceil(n_current_range / MAX_NUMBER_OF_NAMES_IN_RANGE);
+		const all_start_from = Math.floor(
+			(this.nodes_data_structure.length % increment) / 2
+		);
 
-		const start_from = all_start_from + Math.floor((this.first_column-all_start_from)/increment)*increment - this.first_column;
+		const start_from =
+      all_start_from +
+      Math.floor((this.first_column - all_start_from) / increment) * increment -
+      this.first_column;
 
-		for (let i = start_from; i < n_current_range; i+=increment) {
+		for (let i = start_from; i < n_current_range; i += increment) {
 			const number = document.createElementNS(
 				'http://www.w3.org/2000/svg',
 				'text'
 			);
-			number.textContent =
-      this.column_names ?
-      	this.column_names[i + this.first_column] :
-      	i + this.first_column + this.start_column_count_from;
+			number.textContent = this.column_names
+				? this.column_names[i + this.first_column]
+				: i + this.first_column + this.start_column_count_from;
 			set_attributes(number, {
 				x: this.column_width / 2 + i * this.column_width,
 				y: 10,
@@ -1375,7 +1316,11 @@ class SankeyPlot {
         			: number_of_columns,
         	];
 
-			for (let column_index = check_range[0]; column_index < check_range[1]; column_index++) {
+			for (
+				let column_index = check_range[0];
+				column_index < check_range[1];
+				column_index++
+			) {
 				for (const node_index in this.nodes_data_structure[column_index]) {
 					for (const link_index in this.nodes_data_structure[column_index][
 						node_index
@@ -1400,7 +1345,11 @@ class SankeyPlot {
 		}
 		this.links_to_create_indexes = [...new Set(this.links_to_create_indexes)];
 		// third step - creating nodes that are in range
-		for (let column_index = this.first_column; column_index < this.last_column; column_index++) {
+		for (
+			let column_index = this.first_column;
+			column_index < this.last_column;
+			column_index++
+		) {
 			if (!this.nodes.hasOwnProperty(column_index)) {
 				this.nodes[column_index] = {};
 			}
@@ -1715,9 +1664,9 @@ class SankeyNode {
 			const distance_from_top = 0;
 			const new_y_pos =
         new_y -
-         distance_from_top +
-         - this.sankey_plot_object.cursor_distance_from_node_top +
-         this.sankey_plot_object.dom_node.parentNode.scrollTop; 
+        distance_from_top +
+        -this.sankey_plot_object.cursor_distance_from_node_top +
+        this.sankey_plot_object.dom_node.parentNode.scrollTop;
 
 			this.sankey_plot_object.nodes_data_structure[this.column][this.position][
 				'vertical_shift'

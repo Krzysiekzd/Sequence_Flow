@@ -1,6 +1,6 @@
 import noUiSlider from 'nouislider';
 import { scaleOrdinal, schemeDark2 } from 'd3';
-import { downloadPng } from 'svg-crowbar';
+import { downloadPng, downloadSvg } from 'svg-crowbar';
 import { PlotCreator } from './SanKEY_script.js';
 import { DragAndDropGrouped } from './DragAndDropGrouped.js';
 import { SequenceProcessor } from './SequenceProcessor.js';
@@ -46,7 +46,7 @@ export class VisualizationManger{
 	constructor({nodes, links, sequences, sequences_names, alignment_type, tree}) {
 
 		const first_column = 1;
-		const last_column = Math.min(15,sequences[0].length+1);
+		const last_column = Math.min(15,sequences[0].length);
 		this.setInitialPlotDimensions();
 
 		this.sequences = sequences;
@@ -97,6 +97,7 @@ export class VisualizationManger{
 		this.tree = tree ? tree : undefined;
 		this.tree ? this.createTree() : null;
 		this.createClassicalAlignment();
+		this.functionalizeHighlightColorPicker();
 	}
 
 	setInitialPlotDimensions(){
@@ -122,7 +123,7 @@ export class VisualizationManger{
 			columnTo+1,
 			{
 				vertical_gap_between_nodes: 0.5,
-				node_percent_of_column_width: 0.3,
+				node_percent_of_column_width: 0.4,
 				show_column_lines: Boolean(document.getElementById('show_column_lines').checked),
 				show_column_names: Boolean(document.getElementById('show_column_numbers').checked),
 				node_move_y: Boolean(document.getElementById('allow_moving_nodes').checked),
@@ -292,13 +293,19 @@ export class VisualizationManger{
 			const [from,to] = this.rangeMediator.getRange();
 			this.updateAlignmentMatrix(from,to);
 		});
-		document.getElementById('save_image').addEventListener('click', ()=>{
-			downloadPng(document.getElementById('sankey_field'), 'poa_diagram');
-			this.plot.reloadPlot();
-		});
 		document.getElementById('settings_button').addEventListener('click',()=>{
 			const _ = document.getElementById('sidebar').style;
 			_.display === 'none' ? _.removeProperty('display') : _.display = 'none';
+		});
+		document.getElementById('save_image').addEventListener('click', ()=>{
+			const format = document.getElementById('image_format_select').value;
+			const diagramSelector = document.getElementById('sankey_field');
+			if (format === 'svg') {
+				downloadSvg(diagramSelector, 'poa_diagram');
+			} else {
+				downloadPng(diagramSelector, 'poa_diagram', {downloadPNGOptions:{ scale: 2 }});
+			}
+			this.plot.reloadPlot();
 		});
 	}
 
@@ -428,7 +435,8 @@ export class VisualizationManger{
 			start, end,
 			symbols_coloring: this.merged ? this.merge_colors : this.color_chooser.getCurrentColoring(),
 			undefined_symbol_color: this.undefined_symbol_color,
-			sequences: this.sequences
+			sequences: this.sequences,
+			sequences_buttons: this.selected_sequences_buttons
 		});
 	}
 
@@ -442,6 +450,7 @@ export class VisualizationManger{
 			links: this.merged ? this.grouped_links :this.links,
 			acids_labels_groups_map: this.merged ? SequenceProcessor.createAcidsGroupMap(this.current_groups_data): {}
 		});
+		this.alignment_matrix_visualization.selectSequence(sequence_name);
 	}
 
 	unselectSequence(sequence_name){
@@ -450,6 +459,7 @@ export class VisualizationManger{
 			links: this.merged ? this.grouped_links :this.links,
 			sequence_index
 		});
+		this.alignment_matrix_visualization.unselectSequence(sequence_name);
 	}
 
 	clearSequencesHighlight(){
@@ -469,15 +479,10 @@ export class VisualizationManger{
 			this.selected_sequences_buttons[seq]['selected']=false;
 		}
 		SankeyDataModifier.unselectAllSequences(this.merged ? this.grouped_links :this.links);
+		this.updateAlignmentMatrix(...this.rangeMediator.getRange());
 	}
 
 	toggleSequenceHighlight(sequence_name){
-		// toggle selection of a leaf in phylotree
-		// if (this.tree){
-		// 	const node = this.tree.getNodeByName(sequence_name);
-		// 	this.tree.display.modifySelection([node]);
-		// }
-		// end
 		if (this.selected_sequences_buttons[sequence_name].selected){
 			this.unselectSequence(sequence_name);
 			this.selected_sequences_buttons[sequence_name].button.style.removeProperty('background-color');
@@ -490,6 +495,26 @@ export class VisualizationManger{
 			this.selected_sequences_buttons[sequence_name].button.style.color = 'white';
 			this.selected_sequences_buttons[sequence_name].selected = true;
 		}
+	}
+
+	functionalizeHighlightColorPicker() {
+		const picker = document.getElementById('highlight_color_picker');
+		picker.value = this.highlight_color;
+
+		picker.addEventListener('change', ()=>{
+			this.highlight_color = picker.value;
+			document.getElementById('for_buttons').style.setProperty('--bright-main-color', this.highlight_color);
+			this.plot.setDefaultSublinksColor(this.highlight_color);
+			if (this.tree){
+				this.tree.display.update();
+			}
+			Object.values(this.selected_sequences_buttons).forEach((data)=>{
+				if (!data.selected){
+					return;
+				}
+				data.button.style.backgroundColor = this.highlight_color;
+			});
+		});
 	}
 
 	// TREE METHODS
@@ -593,7 +618,7 @@ export class VisualizationManger{
 			const id = this.selection_id;
 			if (data[id]){
 				count_class++;
-				element.style('fill', 'var(--bright-main-color)', 'important');
+				element.style('fill', this.highlight_color, 'important');
 			}
 			if (count_class == 0){
 				element.style('fill', 'var(--second-color)', 'important');
@@ -610,7 +635,7 @@ export class VisualizationManger{
 			const id = this.selection_id;
 			if (data[id]){
 				count_class++;
-				element.style('stroke', 'var(--bright-main-color)', 'important')
+				element.style('stroke', this.highlight_color, 'important')
 					.on('click', ()=>{
 						const descendants = this.tree.display.selectAllDescendants(data.target, true, true);
 						this.tree.display.modifySelection(descendants);
